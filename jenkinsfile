@@ -1,5 +1,4 @@
 pipeline {
-    agent any
     stages {
         stage('alpine Install') {
     	agent {
@@ -12,13 +11,11 @@ pipeline {
       }
     }
         stage('Docker Build') {
-             agent any
             steps {
                 sh 'docker build -t bujaretemi1998/docker-react -f Dockerfile.dev .'
             }
         }
         stage('Docker Test') {
-             agent any
             steps {
                 sh 'docker run bujaretemi1998/docker-react npm run test -- --coverage'
             }
