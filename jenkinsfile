@@ -1,24 +1,24 @@
 pipeline {
     agent any
     stages {
-        stage('alpine Install') {
-    	agent any {
-      	docker {
-        	image 'node:16-alpine'
-        }
-      }
-      steps {
-      	sh 'node clean install'
-      }
-    }
-        stage('Docker Build') {
+        stage('Build Project with Node') {
+            agent {
+                docker {
+                    image 'node:16-alpine'
+                }
+            }
             steps {
-                sh 'docker build -t bujaretemi1998/docker-react -f Dockerfile.dev .'
+                sh 'npm install'
             }
         }
-        stage('Docker Test') {
+        stage('Run Tests with Node') {
+            agent {
+                docker {
+                    image 'node:16-alpine'
+                }
+            }
             steps {
-                sh 'docker run bujaretemi1998/docker-react npm run test -- --coverage'
+                sh 'npm test'
             }
         }
     }
