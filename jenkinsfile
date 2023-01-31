@@ -1,24 +1,26 @@
 pipeline {
     agent any
     stages {
-        stage('Build Project with Node') {
-            agent {
-                docker {
-                    image 'node:16-alpine'
+        stage('Node Build') {
+    	    agent {
+      	        docker {
+        	        image 'node:16-alpine'
                 }
             }
             steps {
                 sh 'npm install'
             }
         }
-        stage('Run Tests with Node') {
-            agent {
-                docker {
-                    image 'node:16-alpine'
-                }
-            }
+        stage('Docker Build') {
+            agent any
             steps {
-                sh 'npm test'
+                sh 'docker build -t bujaretemi1998/docker-react .'
+            }
+        }
+        stage('Docker Test') {
+            agent any
+            steps {
+                sh 'docker run bujaretemi1998/docker-react npm test'
             }
         }
     }
